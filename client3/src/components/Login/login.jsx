@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./login.css";
 function Login({ setUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
 
   const verifyUser = async () => {
     try {
@@ -17,15 +19,18 @@ function Login({ setUser }) {
       });
 
       const response = await res.json();
-      localStorage.setItem("user", JSON.stringify(response.user));
-      localStorage.setItem("userId", JSON.stringify(response.user._id));
-      localStorage.setItem("loggedIn", true);
-      localStorage.setItem("token", JSON.stringify(response.token));
-      window.location("/");
-      setLoggedIn(true);
-      setUser(response.user);
+      if (res.status == 403) alert(response.message);
+      else {
+        setUser(response?.user);
+        localStorage.setItem("user", JSON.stringify(response.user));
+        localStorage.setItem("userId", JSON.stringify(response.user._id));
+        localStorage.setItem("loggedIn", true);
+        localStorage.setItem("token", JSON.stringify(response.token));
+        navigate("/");
+      }
     } catch (er) {
       console.log(er);
+      alert(er);
     }
   };
 
@@ -37,7 +42,7 @@ function Login({ setUser }) {
           <li className="item">
             <input
               type="text"
-              placeholder="Mobile Number"
+              placeholder="Email"
               onChange={(e) => setUsername(e.target.value)}
             />
           </li>

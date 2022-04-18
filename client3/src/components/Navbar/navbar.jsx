@@ -1,19 +1,10 @@
-import React, { Component, useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import "./navbar.css";
 import logo from "../../olx-logo.png";
 import { MdSearch } from "react-icons/md";
 import { BsPerson, BsPlusCircleFill } from "react-icons/bs";
 const Navbar = ({ user }) => {
-  // const [user, setUser] = useState(null);
-
-  // useEffect(() => {
-  //   let newUser = localStorage.getItem("user");
-  //   newUser = JSON.parse(newUser);
-  //   setUser(newUser);
-  // }, [user]);
-  console.log(user);
-
   return (
     <div className="navbar-container">
       <div className="navbar-left">
@@ -49,8 +40,11 @@ const Navbar = ({ user }) => {
           <li className="li-flex">
             <BsPlusCircleFill />
 
-            <Link className="link" to="/new" style={{ position: "relative" }}>
-              {0 ? <span className="wish-count">{0}</span> : ""}
+            <Link
+              className="link"
+              to={user ? "/new" : "/login"}
+              style={{ position: "relative" }}
+            >
               Sell
             </Link>
           </li>

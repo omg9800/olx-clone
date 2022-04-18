@@ -41,7 +41,7 @@ module.exports.getProductsBySellerId = (req, res) => {
 
 module.exports.addProduct = (req, res, next) => {
   console.log(req.file, req.body);
-  if (typeof req.body == undefined || req.body.userId) {
+  if (typeof req.body == undefined || !req.body.userId) {
     res.json({
       status: "error",
       message: "data is undefined",

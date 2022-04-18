@@ -11,6 +11,24 @@ const Product = (props) => {
     setProduct(location.state.item);
   }, []);
 
+  const buyItem = (event) => {
+    event.preventDefault();
+
+    const userId = JSON.parse(localStorage.getItem("userId"));
+
+    fetch(`http://localhost:6400/api/product/${userId}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        productId: product._id,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => console.log(json));
+  };
+
   return (
     <div className="product-all">
       <div className="product-container">
@@ -22,7 +40,7 @@ const Product = (props) => {
           <p className="desc">{product?.description}</p>
           <p className="price">Rs. {product?.price}</p>
           <div className="btn">
-            <button>Buy</button>
+            <button onClick={buyItem}>Buy</button>
           </div>
         </div>
       </div>

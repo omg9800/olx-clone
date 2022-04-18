@@ -55,15 +55,20 @@ module.exports.register = async (req, res) => {
 module.exports.login = async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (!user) return res.status(400).send("User not registered.");
-
-  jwt.sign({ _id: user._id }, "privatekey", (err, token) => {
-    console.log(token);
-    res
-      .header("x-auth-token", token)
-      .header("access-control-expose-headers", "x-auth-token")
-      .json({ user, token });
-    // .send(_.pick(user, ["_id", "name", "email"]));
-  });
+  if (user) {
+    bcrypt.compare(req.body.password, user.password, function (err, result) {
+      console.log(user);
+      if (result) {
+        jwt.sign({ _id: user._id }, "privatekey", (err, token) => {
+          console.log(token);
+          res
+            .header("x-auth-token", token)
+            .header("access-control-expose-headers", "x-auth-token")
+            .json({ user, token });
+        });
+      } else res.status(403).json({ message: "Invalid Password or Username." });
+    });
+  }
 };
 
 module.exports.deleteUser = (req, res) => {

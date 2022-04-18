@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./register.css";
 import "../Login/login.css";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-
-// toast.configure();
 
 function Register() {
   const [user, setUser] = useState({
@@ -14,6 +10,8 @@ function Register() {
     password: "",
     phone: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,10 +33,10 @@ function Register() {
       body: JSON.stringify(user),
     })
       .then(() => {
-        console.log("success");
-        // notify();
+        navigate("/login");
       })
       .catch((e) => {
+        alert(e.message);
         console.log(e.message);
       });
   };
@@ -63,7 +61,6 @@ function Register() {
               name="email"
               placeholder="Email"
               onChange={handleChange}
-              //   onChange={(e) => setUsername(e.target.value)}
             />
           </li>
           <li className="item">
@@ -72,7 +69,6 @@ function Register() {
               name="phone"
               placeholder="Mobile Number"
               onChange={handleChange}
-              //   onChange={(e) => setUsername(e.target.value)}
             />
           </li>
 
@@ -82,7 +78,6 @@ function Register() {
               type="password"
               placeholder="Password"
               onChange={handleChange}
-              //   onChange={(e) => setPassword(e.target.value)}
             />
           </li>
           <li>
