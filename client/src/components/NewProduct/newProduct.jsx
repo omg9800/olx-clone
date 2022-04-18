@@ -28,8 +28,6 @@ const NewProduct = () => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-
     const userId = JSON.parse(localStorage.getItem("userId"));
     let formData = new FormData();
     formData.append("name", product.name);
@@ -45,7 +43,10 @@ const NewProduct = () => {
       method: "POST",
       body: formData,
     })
-      .then(() => console.log("posted"))
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
       .catch((e) => console.log(e));
 
     event.preventDefault();
@@ -57,7 +58,7 @@ const NewProduct = () => {
         <div className="form-item">
           <h2>Add new Product</h2>
         </div>
-        <form encType="multipart/form-data">
+        <form encType="multipart/form-data" onSubmit="return false">
           <div className="form-item">
             <input
               type="text"
@@ -94,7 +95,9 @@ const NewProduct = () => {
             <input type="file" name="file" onChange={handleFile} />
           </div>
           <div className="form-item">
-            <button onClick={handleSubmit}>Submit</button>
+            <button type="submit" onClick={() => handleSubmit()}>
+              Submit
+            </button>
           </div>
         </form>
       </div>
